@@ -4,7 +4,7 @@
 		height: 18px;
 		border-radius: 10px;
 		margin-right: 6px;
-		background-color: red;
+		background-color: #e43d33;
 	}
 
 	.greenDecoration {
@@ -12,7 +12,7 @@
 		height: 18px;
 		border-radius: 10px;
 		margin-right: 6px;
-		background-color: green;
+		background-color: #18bc37;
 	}
 
 	.misregistration {

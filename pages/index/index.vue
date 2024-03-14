@@ -1,4 +1,10 @@
 <style>
+	/* 设置数字字体为等宽数字 */
+	body {
+		-webkit-font-variant-numeric: lining-nums;
+		font-variant-numeric: lining-nums;
+	}
+
 	.container {
 		height: 80vh;
 		display: flex;
