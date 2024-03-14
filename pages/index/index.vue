@@ -8,7 +8,7 @@
 	body {
 		-webkit-font-variant-numeric: lining-nums;
 		font-variant-numeric: lining-nums;
-		font-family: "Microsoft Yahei";
+		font-family: "SF Pro SC", "SF Pro Display", "SF Pro Icons", "PingFang SC", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
 		overflow: hidden;
 		height: 100%
 	}
