@@ -11,7 +11,7 @@ const store = createStore({
 		}
 	},
 	getters: {
-		totalTime(state) {
+		interval(state) {
 			return state.countdown.redLight + state.countdown.greenLight
 		}
 	},

@@ -4,7 +4,7 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		font-size: 30px;
+		font-size: 45px;
 		font-weight: bold;
 	}
 
@@ -31,11 +31,11 @@
 			}
 		},
 		methods: {
-			getInterval(interval, offsetSecond) {
+			getInterval(interval, misregistration) {
 				const epoch = new Date();
 				epoch.setHours(0, 0, 0, 0);
 				epoch.setDate(epoch.getDate() - 1);
-				epoch.setSeconds(offsetSecond);
+				epoch.setSeconds(misregistration);
 
 				const offsetTime = Date.now() - epoch.getTime();
 				const second = interval - (offsetTime / 1000) % interval;
@@ -55,7 +55,7 @@
 				return str;
 			},
 			timeup() {
-				this.getInterval(store.getters.totalTime, store.state.countdown.misregistration);
+				this.getInterval(store.getters.interval, store.state.countdown.misregistration);
 			},
 
 		},
