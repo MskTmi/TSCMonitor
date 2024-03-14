@@ -14,11 +14,11 @@
 	}
 
 	.container {
-		height: 80vh;
+		height: 72vh;
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		font-size: 45px;
+		font-size: 50px;
 		font-weight: bold;
 	}
 
