@@ -61,15 +61,15 @@
 		},
 		methods: {
 			redLightInput(countdown) {
-				store.state.countdown.redLight = countdown;
+				store.state.countdown.redLight = parseInt(countdown);
 				store.commit("setCountdown", store.state.countdown);
 			},
 			greenLightInput(countdown) {
-				store.state.countdown.greenLight = countdown;
+				store.state.countdown.greenLight = parseInt(countdown);
 				store.commit("setCountdown", store.state.countdown);
 			},
 			misregistrationInput(data) {
-				store.state.countdown.misregistration = data;
+				store.state.countdown.misregistration = parseInt(data);
 				store.commit("setCountdown", store.state.countdown);
 			}
 		}
