@@ -1,4 +1,14 @@
 <style>
+	/* 仅针对Safari浏览器的字体设置 */
+	@media not all and (min-resolution:.001dpcm) {
+		@supports (-webkit-appearance:none) {
+			body {
+				font-family: 'PingFang SC', sans-serif;
+				/* 这里设置苹方字体 */
+			}
+		}
+	}
+
 	/* 设置数字字体为等宽数字 */
 	body {
 		-webkit-font-variant-numeric: lining-nums;
