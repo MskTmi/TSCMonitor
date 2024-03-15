@@ -1,7 +1,7 @@
 <style>
 	@font-face {
 		font-family: 'DigiBold';
-		src: url('static/DigiBold.ttf') format('truetype');
+		src: url('@/static/DigiBold.ttf') format('truetype');
 	}
 
 	html {
