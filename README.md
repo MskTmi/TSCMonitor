@@ -1,9 +1,9 @@
 # TSCMonitor
 > 红绿灯状态监控
 
-最近在学习wx小程序，拿小项目练练手
+最近在学习用uni-app做小程序，拿小项目练练手
 
-## Demo
+## 网页版Demo
 **https://tsc.msktmi.com**
 
 ## 其他
