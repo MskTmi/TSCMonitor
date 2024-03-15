@@ -2,11 +2,11 @@
 	"pages": [{
 			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": "倒计时"
+				"navigationBarTitleText": "载入中"
 			}
 		},
 		{
-			"path": "pages/setting/setting",
+			"path": "pages/setting/index",
 			"style": {
 				"navigationBarTitleText": "设置",
 				"enablePullDownRefresh": false
@@ -27,13 +27,14 @@
 		"selectedColor": "#007AFF",
 		"borderStyle": "black",
 		"backgroundColor": "#F8F8F8",
+		"height": "60px",
 		"list": [{
 			"pagePath": "pages/index/index",
 			"iconPath": "static/Icons/tabBar/home.png",
 			"selectedIconPath": "static/Icons/tabBar/home_select.png",
 			"text": "首页"
 		}, {
-			"pagePath": "pages/setting/setting",
+			"pagePath": "pages/setting/index",
 			"iconPath": "static/Icons/tabBar/setting.png",
 			"selectedIconPath": "static/Icons/tabBar/setting_select.png",
 			"text": "设置"

@@ -1,4 +1,9 @@
 <style>
+	@font-face {
+		font-family: 'DigiBold';
+		src: url('static/DigiBold.ttf') format('truetype');
+	}
+
 	html {
 		overflow: hidden;
 		height: 100%
@@ -8,7 +13,7 @@
 	body {
 		-webkit-font-variant-numeric: lining-nums;
 		font-variant-numeric: lining-nums;
-		font-family: "SF Pro SC", "SF Pro Display", "SF Pro Icons", "PingFang SC", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+		/* font-family: PingFangSC-Medium, sans-serif; */
 		overflow: hidden;
 		height: 100%
 	}
@@ -18,12 +23,13 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		font-size: 50px;
-		font-weight: bold;
 	}
 
 	.container text {
-		margin-right: 6px;
+		font-family: 'DigiBold', sans-serif;
+		font-size: 80px;
+		/* font-weight: bold; */
+		letter-spacing: 1px;
 	}
 </style>
 
@@ -40,7 +46,7 @@
 	export default {
 		data() {
 			return {
-				TSCText: "加载中...",
+				TSCText: "00:00",
 				TSCcolor: "#ffaa00"
 			}
 		},
@@ -55,10 +61,16 @@
 				const second = interval - (offsetTime / 1000) % interval;
 
 				if (second < 180) {
-					this.TSCText = "红灯 " + this.SecondToTimeStr(second);
+					uni.setNavigationBarTitle({
+						title: "红灯"
+					});
+					this.TSCText = this.SecondToTimeStr(second);
 					this.TSCcolor = "#e43d33";
 				} else {
-					this.TSCText = "绿灯 " + this.SecondToTimeStr(second - 180);
+					uni.setNavigationBarTitle({
+						title: "绿灯"
+					});
+					this.TSCText = this.SecondToTimeStr(second - store.state.countdown.redLight);
 					this.TSCcolor = "#18bc37";
 				}
 			},
@@ -70,7 +82,7 @@
 			},
 			timeup() {
 				this.getInterval(store.getters.interval, store.state.countdown.misregistration);
-			},
+			}
 
 		},
 		components: {

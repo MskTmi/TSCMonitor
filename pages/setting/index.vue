@@ -20,7 +20,7 @@
 		height: 46px;
 		border-radius: 10px;
 		margin-right: 6px;
-		background-color: #2979ff;
+		background-color: #ffaa00;
 	}
 </style>
 <template>
