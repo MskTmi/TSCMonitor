@@ -69,6 +69,20 @@
 				store.commit("setCountdown", store.state.countdown);
 			},
 			misregistrationInput(data) {
+				uni.request({
+					url: 'https://tscmonitorkv.msktmi.com/put',
+					method: 'POST',
+					header: {
+						'Content-Type': 'application/json'
+					},
+					data: {
+						key: 'misregistration',
+						value: parseInt(data)
+					},
+					success: (res) => {
+						//res.data == "True"
+					}
+				});
 				store.state.countdown.misregistration = parseInt(data);
 				store.commit("setCountdown", store.state.countdown);
 			}

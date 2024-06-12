@@ -50,6 +50,19 @@
 				TSCcolor: "#ffaa00"
 			}
 		},
+		onLoad() {
+			//使用 Cloudflare Workers KV(https://developers.cloudflare.com/kv/) 同步 misregistration
+			uni.request({
+				url: 'https://tscmonitorkv.msktmi.com/get',
+				data: {
+					key: 'misregistration'
+				},
+				success: (res) => {
+					store.state.countdown.misregistration = res.data
+					store.commit("setCountdown", store.state.countdown);
+				}
+			});
+		},
 		methods: {
 			getInterval(interval, misregistration) {
 				const epoch = new Date();
