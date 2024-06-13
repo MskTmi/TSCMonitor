@@ -51,16 +51,16 @@
 			}
 		},
 		methods: {
-			getInterval(interval, misregistration) {
+			getInterval(interval) {
 				const epoch = new Date();
 				epoch.setHours(0, 0, 0, 0);
 				epoch.setDate(epoch.getDate() - 1);
-				epoch.setSeconds(misregistration);
+				epoch.setSeconds(store.state.countdown.misregistration);
 
 				const offsetTime = Date.now() - epoch.getTime();
 				const second = interval - (offsetTime / 1000) % interval;
 
-				if (second < 180) {
+				if (second < store.state.countdown.redLight) {
 					uni.setNavigationBarTitle({
 						title: "红灯"
 					});
@@ -81,7 +81,7 @@
 				return str;
 			},
 			timeup() {
-				this.getInterval(store.getters.interval, store.state.countdown.misregistration);
+				this.getInterval(store.getters.interval);
 			}
 
 		},
