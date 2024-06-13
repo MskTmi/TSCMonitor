@@ -36,7 +36,7 @@
 <template>
 	<view class="container" :style="{ color: TSCcolor }">
 		<text>{{TSCText}}</text>
-		<el-timer :interval="1000" @tick="timeup"></el-timer>
+		<el-timer :interval="200" @tick="timeup"></el-timer>
 	</view>
 </template>
 
@@ -55,25 +55,25 @@
 			uni.request({
 				url: 'https://tscmonitorkv.msktmi.com/get',
 				data: {
-					key: 'misregistration'
+					key: 'countdown'
 				},
 				success: (res) => {
-					store.state.countdown.misregistration = res.data
+					store.state.countdown = res.data;
 					store.commit("setCountdown", store.state.countdown);
 				}
 			});
 		},
 		methods: {
-			getInterval(interval, misregistration) {
+			getInterval(interval) {
 				const epoch = new Date();
 				epoch.setHours(0, 0, 0, 0);
 				epoch.setDate(epoch.getDate() - 1);
-				epoch.setSeconds(misregistration);
+				epoch.setSeconds(store.state.countdown.misregistration);
 
 				const offsetTime = Date.now() - epoch.getTime();
 				const second = interval - (offsetTime / 1000) % interval;
 
-				if (second < 180) {
+				if (second < store.state.countdown.redLight) {
 					uni.setNavigationBarTitle({
 						title: "红灯"
 					});
@@ -94,7 +94,7 @@
 				return str;
 			},
 			timeup() {
-				this.getInterval(store.getters.interval, store.state.countdown.misregistration);
+				this.getInterval(store.getters.interval);
 			}
 
 		},
