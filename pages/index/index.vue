@@ -6,7 +6,7 @@
 
 	html {
 		overflow: hidden;
-		height: 100%
+		height: 100%;
 	}
 
 	/* 设置数字字体为等宽数字 */
@@ -15,7 +15,7 @@
 		font-variant-numeric: lining-nums;
 		/* font-family: PingFangSC-Medium, sans-serif; */
 		overflow: hidden;
-		height: 100%
+		height: 100%;
 	}
 
 	.container {
@@ -34,7 +34,7 @@
 </style>
 
 <template>
-	<view class="container" :style="{ color: TSCcolor }">
+	<view class="container" :style="{ color: TSCcolor ,background: backgroundCcolor}">
 		<text>{{TSCText}}</text>
 		<el-timer :interval="200" @tick="timeup"></el-timer>
 	</view>
@@ -47,7 +47,8 @@
 		data() {
 			return {
 				TSCText: "00:00",
-				TSCcolor: "#ffaa00"
+				TSCcolor: "#ffaa00",
+				backgroundCcolor: ""
 			}
 		},
 		onLoad() {
@@ -62,6 +63,12 @@
 					store.commit("setCountdown", store.state.countdown);
 				}
 			});
+
+			//屏保模式
+			var windowHeight = uni.getWindowInfo().windowHeight
+			if (windowHeight < 400) {
+				this.adaptScreensaver();
+			}
 		},
 		methods: {
 			getInterval(interval) {
@@ -95,8 +102,16 @@
 			},
 			timeup() {
 				this.getInterval(store.getters.interval);
+			},
+			adaptScreensaver() {
+				uni.hideTabBar();
+				uni.setNavigationBarColor({
+					frontColor: '#000000',
+					backgroundColor: '#000000',
+				});
+				document.querySelector('body').setAttribute('style', 'background-color:black');
+				this.backgroundCcolor = "black"
 			}
-
 		},
 		components: {
 			ElTimer
