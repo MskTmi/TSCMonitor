@@ -69,6 +69,15 @@
 			if (windowHeight < 400) {
 				this.adaptScreensaver();
 			}
+			//监听屏幕变化
+			const windowResizeCallback = (res) => {
+				if (res.size.windowHeight < 400) {
+					this.adaptScreensaver();
+				} else {
+					this.unAdaptScreensaver();
+				}
+			}
+			uni.onWindowResize(windowResizeCallback)
 		},
 		methods: {
 			getInterval(interval) {
@@ -111,6 +120,15 @@
 				});
 				document.querySelector('body').setAttribute('style', 'background-color:black');
 				this.backgroundCcolor = "black"
+			},
+			unAdaptScreensaver() {
+				uni.showTabBar();
+				uni.setNavigationBarColor({
+					frontColor: '#000000',
+					backgroundColor: '#ffffff',
+				});
+				document.querySelector('body').setAttribute('style', 'background-color:#f5f5f5');
+				this.backgroundCcolor = "#f5f5f5"
 			}
 		},
 		components: {
