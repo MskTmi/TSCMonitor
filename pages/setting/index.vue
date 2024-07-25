@@ -131,13 +131,17 @@
 			redLightInput(countdown) {
 				store.state.countdown.redLight = parseInt(countdown);
 				store.commit("setCountdown", store.state.countdown);
+				this.messageToggle()
 			},
 			greenLightInput(countdown) {
 				store.state.countdown.greenLight = parseInt(countdown);
 				store.commit("setCountdown", store.state.countdown);
+				this.messageToggle()
 			},
 			misregistrationInput(countdown) {
 				store.state.countdown.misregistration = parseInt(countdown);
+				store.commit("setCountdown", store.state.countdown);
+				this.messageToggle()
 			},
 			messageToggle(type = "success", messageText = "修改成功") {
 				this.msgType = type;
@@ -164,10 +168,14 @@
 				//保存偏移量
 				this.misregistration = parseInt(misregistration);
 				store.state.countdown.misregistration = parseInt(misregistration);
+
+				this.messageToggle()
 			},
 
 		}
 	}
 </script>
 
-<style></style>
+<style>
+
+</style>
