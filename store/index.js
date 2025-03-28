@@ -7,7 +7,8 @@ const store = createStore({
 		countdown: {
 			redLight: 180,
 			greenLight: 60,
-			misregistration: 120
+			misregistration: 120,
+			lastUpdate:"N/A"
 		}
 	},
 	getters: {
