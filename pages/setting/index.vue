@@ -39,6 +39,11 @@
 		margin: 0px 8px 0px 6px;
 	}
 
+	.timeCalibration_text_lastupdate {
+		margin: 0px 8px 0px 6px;
+		color: #6f6f6f;
+	}
+
 	.timeCalibration_button_green {
 		margin: 0px 6px 0px 8px;
 		color: #ffffff;
@@ -91,6 +96,13 @@
 				</template>
 				<view class="timeCalibration_content">
 					<uni-row class="demo-uni-row">
+						<uni-col :span="24">
+
+							<text class="timeCalibration_text_lastupdate">上次更新：{{lastUpdate}}</text>
+						</uni-col>
+
+					</uni-row>
+					<uni-row class="demo-uni-row">
 						<uni-col :span="12">
 							<button class="timeCalibration_button_red" type="warn"
 								@click="quickCalibration(redLight)">按红灯校准</button>
@@ -106,6 +118,13 @@
 							<button class="timeCalibration_button_green"
 								hover-class="timeCalibration_button_green_hover"
 								@click="quickCalibration(-15)">按绿灯校准（45秒）</button>
+						</uni-col>
+					</uni-row>
+					<uni-row class="demo-uni-row">
+						<uni-col :span="24">
+							<button class="timeCalibration_button_green"
+								hover-class="timeCalibration_button_green_hover"
+								@click="changeOffset120">周期偏移+120秒</button>
 						</uni-col>
 					</uni-row>
 				</view>
@@ -131,7 +150,9 @@
 				message: "修改成功",
 				redLight: store.state.countdown.redLight,
 				greenLight: store.state.countdown.greenLight,
-				misregistration: store.state.countdown.misregistration
+				misregistration: store.state.countdown.misregistration,
+				lastUpdate: store.state.countdown.lastUpdate,
+				updateKVTimeout: null
 			}
 		},
 		methods: {
@@ -155,24 +176,45 @@
 				this.messageText = messageText;
 				this.$refs.message.open();
 			},
+			changeOffset120() {
+				this.misregistration = this.misregistration + 120;
+				if (this.misregistration >= this.redLight + this.greenLight) {
+					this.misregistration -= this.redLight + this.greenLight;
+				}
+				store.state.countdown.misregistration = this.misregistration;
+				store.commit("setCountdown", store.state.countdown);
+				this.updateKV();
+			},
 			updateKV() {
-				uni.request({
-					url: 'https://tscmonitorkv.msktmi.com/put',
-					method: 'POST',
-					header: {
-						'Content-Type': 'application/json'
-					},
-					data: {
-						key: 'countdown',
-						value: JSON.stringify(store.state.countdown)
-					},
-					fail: (res) => {
-						this.messageToggle("error", "保存失败，请检查网络连接");
-					},
-					success: (res) => {
-						this.messageToggle();
-					}
-				});
+				var beforeLastUpdate = store.state.countdown.lastUpdate;
+				store.state.countdown.lastUpdate = new Date().toLocaleString();
+				if (this.updateKVTimeout != null) {
+					clearTimeout(this.updateKVTimeout);
+				}
+				this.updateKVTimeout = setTimeout(() => {
+					uni.request({
+						url: 'https://tscmonitorkv.msktmi.com/put',
+						method: 'POST',
+						header: {
+							'Content-Type': 'application/json'
+						},
+						data: {
+							key: 'countdown',
+							value: JSON.stringify(store.state.countdown)
+						},
+						fail: (res) => {
+							store.state.countdown.lastUpdate = beforeLastUpdate;
+							this.messageToggle("error", "保存失败，请检查网络连接");
+						},
+						success: (res) => {
+							this.messageToggle();
+							store.commit("setCountdown", store.state.countdown);
+							this.lastUpdate = store.state.countdown.lastUpdate;
+						}
+					});
+
+				}, 1000);
+
 			},
 			quickCalibration(offset) {
 				const epoch = new Date();
