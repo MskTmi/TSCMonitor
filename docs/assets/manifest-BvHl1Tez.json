@@ -3,7 +3,7 @@
     "short_name": "红绿灯",
     "description": "红绿灯状态监控，最近在学习用uni-app做小程序，拿小项目练练手。横屏为屏保模式",
     "theme_color": "#f8f8f8",
-    "background_color": "#4f4f4f",
+    "background_color": "#ffffff",
     "display": "standalone",
     "display_override": "standalone",
     "orientation": "any",
