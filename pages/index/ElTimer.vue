@@ -35,7 +35,7 @@
 		watch: {
 			interval: function(newval) {
 				clearInterval(this.theInterval);
-				setInterval(this.doTimer(), newval);
+				this.theInterval = setInterval(this.doTimer,newval);
 			},
 		},
 	};
