@@ -38,6 +38,7 @@ const store = createStore({
 })
 
 // 初始化时加载数据
-store.commit('loadCountdown')
+store.commit('loadCountdown');
+
 
 export default store

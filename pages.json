@@ -11,6 +11,14 @@
 				"navigationBarTitleText": "设置",
 				"enablePullDownRefresh": false
 			}
+		},
+		{
+			"path" : "pages/worktime/worktime",
+			"style" : 
+			{
+				"navigationBarTitleText" : "打卡",
+				"enablePullDownRefresh": false
+			}
 		}
 	],
 	"globalStyle": {
@@ -33,7 +41,15 @@
 			"iconPath": "static/Icons/tabBar/home.png",
 			"selectedIconPath": "static/Icons/tabBar/home_select.png",
 			"text": "首页"
-		}, {
+		}, 
+		{
+			"pagePath": "pages/worktime/worktime",
+			"iconPath": "static/Icons/tabBar/worktime.png",
+			"selectedIconPath": "/static/Icons/tabBar/worktime_selected.png",
+			"visible":false,
+			"text": "打卡"
+		},
+		{
 			"pagePath": "pages/setting/index",
 			"iconPath": "static/Icons/tabBar/setting.png",
 			"selectedIconPath": "static/Icons/tabBar/setting_select.png",

@@ -75,7 +75,7 @@
 			</div>
 		</view>
 
-		<el-timer :interval="100" @tick="timeup"></el-timer>
+		<el-timer v-if="shouldUpdate" :interval="100" @tick="timeup"></el-timer>
 	</view>
 </template>
 
@@ -89,7 +89,8 @@
 				TSCcolor: "#ffaa00",
 				backgroundCcolor: "",
 				canvasContext2d: null,
-				canvasRenderEpochTime: 0
+				canvasRenderEpochTime: 0,
+				shouldUpdate:false,
 			}
 		},
 		onLoad() {
@@ -104,7 +105,6 @@
 					store.commit("setCountdown", store.state.countdown);
 				}
 			});
-
 			/*
 			// 根据宽高适配的方案：
 			
@@ -123,7 +123,6 @@
 			*/
 			var forceScreensaver = false;
 			if(window.navigator && window.navigator.userAgent){
-				console.log(window.navigator.userAgent);
 				if(window.navigator.userAgent.indexOf("screensaver") > 0){
 					forceScreensaver = true;
 				}
@@ -212,13 +211,14 @@
 					return w / 2 + (m - centerMinute) * pixelPerMinute;
 				}
 
+				var nowPix = min2pix(nowMinute);
 
 				// 设置刻度线样式
 				ctx.strokeStyle = 'darkgray';
 				ctx.lineWidth = 5;
 
 				// 计算中心线位置
-				var centerLineY = h / 2 - 55;
+				var centerLineY =Math.round(h / 2 - 55);
 
 				// 绘制当前指针
 				// ctx.beginPath();
@@ -277,20 +277,30 @@
 				ctx.font = '36px Arial';
 				ctx.setTextBaseline('top')
 				var beginTime = firstGreenMinute;
+				
+				
 				while(beginTime < toMinute){
 					var greenFromX = min2pix(beginTime);
 					var greenToX = min2pix(beginTime + greenMinute);
 					var redFromX = greenToX;
 					var redToX = min2pix(beginTime + totalInterval);
 					
-					ctx.fillStyle = "#18bc37"; // 绿色
+					ctx.fillStyle = greenFromX < nowPix ? "#aaaaaa" : "#18bc37"; // 绿色
 					ctx.fillRect(greenFromX,centerLineY + 20,greenToX - greenFromX,10);
+					if(greenFromX < nowPix && greenToX > nowPix){
+						ctx.fillStyle = "#18bc37"; 
+						ctx.fillRect(nowPix,centerLineY + 20,greenToX - nowPix,10);
+					}
+					ctx.fillStyle = greenToX < nowPix ? "#aaaaaa" : "#18bc37"; // 绿色
 					ctx.fillText(minToFullTime(beginTime),(greenFromX + (greenToX - greenFromX) / 2),centerLineY + 40)
 					
-					ctx.fillStyle = "#e43d33"; // 红色
+					ctx.fillStyle = redFromX < nowPix ? "#aaaaaa" : "#e43d33"; // 红色
 					
 					ctx.fillRect(redFromX + 5,centerLineY + 22,redToX - redFromX - 10,5);
-					
+					if(redFromX < nowPix && redToX - 10 > nowPix){
+						ctx.fillStyle = "#e43d33"; 
+						ctx.fillRect(nowPix + 5,centerLineY + 22,redToX - nowPix - 10,5);
+					}
 					
 					beginTime += totalInterval;
 				}
@@ -329,6 +339,15 @@
 				document.querySelector('body').setAttribute('style', 'background-color:#f5f5f5');
 				this.backgroundCcolor = "#f5f5f5"
 			}
+		},
+		// 修复切换页面后标题被覆盖的问题
+		onHide() {
+			console.log("Main Hide");
+			this.shouldUpdate = false;
+		},
+		onShow() {
+			console.log("Main show");
+			this.shouldUpdate = true;
 		},
 		components: {
 			ElTimer
