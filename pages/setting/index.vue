@@ -131,11 +131,21 @@
 			</uni-collapse-item>
 		</uni-collapse>
 
-
+		<uni-section title="打卡助手 (Beta)" subTitle="根据上班时间和打卡规则,自动计算出最适合的一班红绿灯" titleFontSize="18px" padding>
+			<template v-slot:decoration>
+				<view class="timeCalibration"></view>
+				
+			</template>
+			<checkbox-group @change="toggleWorkTimeState">
+				
+				<checkbox value="worktime" :checked="showWorkTime">启用打卡助手</checkbox>
+				
+			</checkbox-group>
+			</uni-section>
 		<view>
 			<!-- 提示信息弹窗 -->
 			<uni-popup ref="message" type="message">
-				<uni-popup-message :type="msgType" :message="messageText" :duration="2000"></uni-popup-message>
+				<uni-popup-message :type="msgType"  :message="messageText" :duration="2000"></uni-popup-message>
 			</uni-popup>
 		</view>
 	</view>
@@ -143,6 +153,7 @@
 
 <script>
 	import store from '@/store/index.js';
+	import workStore from '@/store/workstore.js';
 	export default {
 		data() {
 			return {
@@ -152,8 +163,16 @@
 				greenLight: store.state.countdown.greenLight,
 				misregistration: store.state.countdown.misregistration,
 				lastUpdate: store.state.countdown.lastUpdate,
-				updateKVTimeout: null
+				updateKVTimeout: null,
+				showWorkTime:workStore.state.worktime.enabled,
 			}
+		},
+		onLoad() {
+			
+			uni.setTabBarItem({
+				index: 1,
+				visible: workStore.state.worktime.enabled
+			});
 		},
 		methods: {
 			redLightInput(countdown) {
@@ -238,7 +257,15 @@
 				store.state.countdown.misregistration = parseInt(misregistration);
 				this.updateKV();
 			},
-
+			toggleWorkTimeState(e){
+				this.showWorkTime = e.detail.value.length > 0;
+				workStore.state.worktime.enabled = this.showWorkTime;
+				workStore.commit("saveWorkTime",workStore.state.worktime);
+				uni.setTabBarItem({
+				  index: 1,
+				  visible: workStore.state.worktime.enabled
+				})
+			}
 		}
 	}
 </script>

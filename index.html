@@ -9,7 +9,7 @@
 		<link rel="bookmark" type="image/png" href="static/logo.png">
 		<link rel="apple-touch-icon" href="static/logo.png" />
 		<link rel="manifest" href="static/manifest.json" />
-		
+
 		<script>
 			var coverSupport = 'CSS' in window && typeof CSS.supports === 'function' && (CSS.supports('top: env(a)') ||
 				CSS.supports('top: constant(a)'))
@@ -30,6 +30,11 @@
 			console.groupEnd();
 		</script>
 		<title>红绿灯</title>
+		<style>
+			uni-toast .uni-toast__content {
+				white-space: pre-wrap;
+			}
+		</style>
 		<!--preload-links-->
 		<!--app-context-->
 	</head>

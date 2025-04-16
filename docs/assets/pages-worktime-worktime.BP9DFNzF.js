@@ -1,1 +1,0 @@
-import{c as e,w as s,i as t,o as a,l as o}from"./index-lWN4Le-r.js";import{_ as r}from"./plugin-vueexport-helper.BCo6x5W8.js";const n=r({data:()=>({}),methods:{}},[["render",function(r,n,l,u,d,i){const p=t;return a(),e(p,null,{default:s((()=>[o(" 打卡辅助 ")])),_:1})}]]);export{n as default};
