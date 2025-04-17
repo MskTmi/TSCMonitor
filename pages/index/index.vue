@@ -715,7 +715,7 @@
 			},
 			setSignOnTime(timestr){
 				workStore.state.worktime.onWorkTime = timestr;
-				workStore.state.lastRecordDate = workStore.getters.datestamp;
+				workStore.state.worktime.lastRecordDate = workStore.getters.datestamp;
 				// 提交保存操作
 				workStore.commit("saveWorkTime", workStore.state.worktime);
 				this.computeSignOffTime();

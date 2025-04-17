@@ -131,7 +131,7 @@
 			</uni-collapse-item>
 		</uni-collapse>
 
-		<uni-section title="打卡助手 (Beta)" subTitle="根据上班时间和打卡规则,自动计算出最适合的一班红绿灯" titleFontSize="18px" padding>
+		<uni-section title="打卡助手 (Beta)" subTitle="根据上班时间和打卡规则,自动计算出最适合的一班红绿灯\n下班打卡时间和下楼倒计时将会显示在时间轴上" titleFontSize="18px" padding>
 			<template v-slot:decoration>
 				<view class="timeCalibration"></view>
 				
