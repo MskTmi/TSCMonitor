@@ -49,6 +49,17 @@
 			<uni-easyinput placeholder="请输入数字" type="number" trim="all" v-model="inputs.checkinMachinePosition"
 				:clearable="false"></uni-easyinput>
 		</uni-section>
+		<uni-section title="打卡APP启动URI" subTitle="如果使用APP打卡且APP支持URI启动, 可以填写URI以便显示快速启动打卡APP的按钮" titleFontSize="18px" padding>
+			<template v-slot:decoration>
+				<view class="yellow-decoration"></view>
+			</template>
+			<view style="width: 100%;display: flex;flex-direction: row;">
+				<uni-easyinput style="display: inline-block;width: calc(100% - 120px);" placeholder="请输入uri (例如: dingtalk://)" type="text" trim="all" v-model="config.checkinAppOpenUri"
+					:clearable="true"></uni-easyinput>
+					<button @click="testOpenUri" style="display: inline-block;line-height:36px; width: 110px;margin-left:10px;height: 37px;">测试</button>
+			</view>
+			
+		</uni-section>
 		<uni-row class="save_row">
 			<uni-col :span="24">
 				<button class="timeCalibration_button_green" hover-class="timeCalibration_button_green_hover"
@@ -77,7 +88,8 @@
 					onWorkTime: workStore.state.worktime.onWorkTime, // 弹性工作制下记录的上班打卡时间
 					leaveOfficeDuration: workStore.state.worktime.leaveOfficeDuration, // 下楼所需的时间
 					onWorkHours: workStore.state.worktime.onWorkHours, // 上班时常（小时）
-					checkinMachinePosition: workStore.state.worktime.checkinMachinePosition // 从出办公室到打卡机位置，为0则是在办公室门口
+					checkinMachinePosition: workStore.state.worktime.checkinMachinePosition, // 从出办公室到打卡机位置，为0则是在办公室门口
+					checkinAppOpenUri: workStore.state.worktime.checkinAppOpenUri // 打卡APP的启动URI
 				},
 				inputs: {
 					leaveOfficeDuration: workStore.state.worktime.leaveOfficeDuration + "",
@@ -113,6 +125,7 @@
 				workStore.state.worktime.leaveOfficeDuration = this.config.leaveOfficeDuration;
 				workStore.state.worktime.onWorkHours = this.config.onWorkHours;
 				workStore.state.worktime.checkinMachinePosition = this.config.checkinMachinePosition;
+				workStore.state.worktime.checkinAppOpenUri = this.config.checkinAppOpenUri;
 
 				// 提交保存操作
 				workStore.commit("saveWorkTime", workStore.state.worktime);
@@ -215,6 +228,17 @@
 				this.popup.messageText = msg;
 				this.$refs.message.open();
 			},
+			testOpenUri(){
+				try{
+					window.open(this.config.checkinAppOpenUri);
+				}catch(e){
+					uni.showToast({
+						icon:"fail",
+						title:"跳转APP失败"
+					});
+					console.log(e);
+				}
+			}
 		}
 	}
 </script>
@@ -243,7 +267,13 @@
 		margin-right: 6px;
 		background-color: #ffaa00;
 	}
-
+	.yellow-decoration {
+		width: 4px;
+		height: 46px;
+		border-radius: 10px;
+		margin-right: 6px;
+		background-color: #fff55e;
+	}
 	.primary-decoration {
 		width: 4px;
 		height: 32px;

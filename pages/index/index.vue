@@ -161,8 +161,10 @@
 				<canvas canvas-id="drawCanvas" ref="canvasDom" class="nextgreen-canvas"></canvas>
 			</view>
 		</view>
-		<view class="worktimebutton" v-if="showSignInButton">
-			<button @click="onSignInButtonClick">记录签到</button>
+		<view class="worktimebutton" >
+			<button v-if="showSignInButton" @click="onSignInButtonClick">记录签到</button>
+			<view style="height: 5px;"></view>
+			<button v-if="canShowCheckinAppButton && shouldShowCheckinAppButtion" @click="gotoCheckinApp">前往打卡</button>
 		</view>
 		<view class="worktime" v-if="showSignOffAlternative">
 			签退时间：{{signOffTimeText}}
@@ -193,6 +195,8 @@
 				showSignInButton: false,
 				leaveOfficeTime: -1,
 				leaveOfficeRemainDisplay: "",
+				canShowCheckinAppButton: false,
+				shouldShowCheckinAppButtion:false,
 			}
 		},
 		onLoad() {
@@ -335,6 +339,12 @@
 			computeSignOffTime() {
 				this.showSignOffAlternative = false;
 				if (workStore.state.worktime.enabled) {
+					
+					this.canShowCheckinAppButton =  workStore.state.worktime.checkinAppOpenUri != null && workStore.state.worktime.checkinAppOpenUri != "";
+					this.shouldShowCheckinAppButtion = false;
+					var now = new Date().getTime() - this.canvasRenderEpochTime;
+					
+					var nowMinute = now / 60000;
 					// Compute required data
 					var workTimeConfig = workStore.state.worktime;
 
@@ -353,6 +363,8 @@
 							
 							this.signOffTime = -1;
 							this.leaveOfficeTime = -1;
+							
+							this.shouldShowCheckinAppButtion |= true;
 							// 未填写，则返回，并显示记录签到的按钮
 							return;
 						} else {
@@ -367,6 +379,8 @@
 
 					} else {
 						shouldSignOffTime = workTimeConfig.offWorkTime;
+						this.shouldShowCheckinAppButtion |= nowMinute <= 600;
+						
 					}
 
 					this.signOffTimeText = shouldSignOffTime;
@@ -408,7 +422,10 @@
 							this.leaveOfficeTime = nextGreenLight - workTimeConfig.leaveOfficeDuration / 60.0 + interval;
 						}
 					}
-
+					
+					if(nowMinute >= signOffMinute){
+						this.shouldShowCheckinAppButtion |= true;
+					}
 					
 					this.showSignInButton = false;
 					this.showSignOff = true;
@@ -537,6 +554,7 @@
 					ctx.fillStyle =  "#00aaff";
 					if(this.signOffTime <= nowMinute){
 						signOffBubbleText = "该打卡了";
+						this.shouldShowCheckinAppButtion = true;
 						ctx.fillStyle =  "#878787";
 					}
 					this.CRC2D_drawBubbles(ctx, this.signOffTime < this.leaveOfficeTime, signOffPixelStart, centerLineY + 90, 170, 110, 24, "签退", signOffBubbleText);
@@ -697,7 +715,6 @@
 					itemList: items,
 					title:"请选择签到时间",
 					success:  (res) => {
-						console.log('选中了第' + (res.tapIndex + 1) + '个按钮');
 						var chosenTime = itemValues[res.tapIndex];
 						if(chosenTime == ""){
 							uni.switchTab({
@@ -725,6 +742,17 @@
 					duration: 2000
 				})
 				this.showSignOffAlternative = true;
+			},
+			gotoCheckinApp(){
+				try{
+					window.open(workStore.state.worktime.checkinAppOpenUri);
+				}catch(e){
+					uni.showToast({
+						icon:"fail",
+						title:"跳转APP失败"
+					});
+					console.log(e);
+				}
 			}
 		},
 		// 修复切换页面后标题被覆盖的问题

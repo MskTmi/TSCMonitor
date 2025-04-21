@@ -20,6 +20,7 @@ const workStore = createStore({
 			leaveOfficeDuration:90, // 下楼所需的时间(秒)
 			checkinMachinePosition:0,// 从出办公室到打卡机位置，为0则是在办公室门口
 			
+			checkinAppOpenUri:"", // 签到APP的打开SCHEMA
 		}
 	},
 	getters: {
